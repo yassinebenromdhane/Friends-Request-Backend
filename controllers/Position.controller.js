@@ -5,8 +5,8 @@ exports.postPosition = async (req,res)=>{
     
     try {
         const newPosition= new Position({ ...req.body });
-        const cat =await Position.findOne({ name : req.body.name });
-         if(cat){
+        const pos =await Position.findOne({ lat : req.body.lat } , { long : req.body.long });
+         if(pos){
             res.status(400).send({message :"Position already exist"});
             return;
          }
@@ -48,13 +48,13 @@ exports.getOne = async (req,res) =>{
 }
  exports.deleteOne= async (req,res) =>{
     try {
-        const result= await Position.deleteOne({_id:req.params.id});
+        const result= await Position.deleteOne({lat:req.params.lat} , {lat:req.params.long} );
         console.log(result);
         result.n
-        ?res.send({message:"Position deleted"})
-        :res.send({message:"there is no Position with this id"});
+        ?res.send({message:"there is no Position with this LatLng"})
+        :res.send({message:"Position deleted"});
     } catch (error) {
-        res.send({message:"there is no id"});
+        res.send({message:"server error"});
     }
 }
 
